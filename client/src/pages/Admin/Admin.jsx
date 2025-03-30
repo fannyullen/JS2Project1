@@ -6,7 +6,7 @@ function Admin() {
 
     const [products, setProducts] = useState([]);
     
-      useEffect(() => { // för att det inte ska skickas massa anrop till backend, utan renderas bara en gång
+      useEffect(() => {
     
         fetch("/api/products")
         .then(resp => resp.json())

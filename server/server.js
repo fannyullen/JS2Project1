@@ -7,9 +7,20 @@ const db = new Database("./db/products.db", {
     verbose: console.log,
 });
 
-const port = 5175;
+const port = 8000;
 
 const app = express();
+
+const slugify = (str) => {
+    return str
+      .toLowerCase()
+      .trim()
+      .replace(/å/g, "a")
+      .replace(/ä/g, "a")
+      .replace(/ö/g, "o")
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "");
+  };
 
 app.use(cors(/* {
     origin: ["http://localhost:3000"]
@@ -21,23 +32,21 @@ app.use(bodyParser.json());
 // GET /api/products
 app.get("/api/products", (req, res) => {
 
-    // Prepare the SELECT query
     const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, urlSlug FROM products")
 
-    // Execute the query and fetch all rows
     const products = select.all();
 
-    res.json(products); // response, the products, in json format
+    res.json(products);
 });
 
 // GET /api/products/:id
-app.get("/api/products/:id", (req, res) => {
+app.get("/api/products/:urlSlug", (req, res) => {
 
-    const productId = req.params.id;
+    const { urlSlug } = req.params;
 
-    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, urlSlug FROM products WHERE id = ?");
+    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, urlSlug FROM products WHERE urlSlug = ?");
 
-    const product = select.get(productId);
+    const product = select.get(urlSlug);
 
     if (!product) {
         return res.status(404).json({ error: "Product not found" });
@@ -48,23 +57,21 @@ app.get("/api/products/:id", (req, res) => {
 
 // GET search
 app.get("/api/search", (req, res) => {
-    // Vi vill komma åt värdet (query) i input-fältet
     const query = req.query.q;
 
     if (!query) return res.json([]);
 
-    // Hämtar data från backend
     const stmt = db.prepare("SELECT * FROM products WHERE productName LIKE ?");
-    //Filtrerar
+    
     const products = stmt.all(`%${query}%`);
 
-    // Response
     res.json(products);
 })
 
+// POST anrop
 app.post('/api/products', (req, res) => {
-    const { productName, description, category, color, image, SKU, productPrice } = req.body;
-    const product = { productName, description, category, color, SKU, image, productPrice }
+    const { productName, description, category, color, image, SKU, productPrice, publishDate } = req.body;
+    const product = { productName, description, category, color, SKU, image, productPrice, publishDate }
 
     const insert = db.prepare(`
         INSERT INTO products (
@@ -74,7 +81,8 @@ app.post('/api/products', (req, res) => {
         color,
         image,
         SKU,
-        productPrice
+        productPrice,
+        publishDate
         ) VALUES (
          @productName,
          @description,
@@ -82,15 +90,17 @@ app.post('/api/products', (req, res) => {
          @color,
          @image,
          @SKU,
-         @productPrice
+         @productPrice,
+         @publishDate
         )
         `);
 
         insert.run(product);
 
-    res.status(201).send()
+    res.status(201).send();
 });
 
+// DELETE-anrop
 app.delete('/api/products/:id', (req, res) => {
     const { id } = req.params;
     const stmt = db.prepare("DELETE FROM products WHERE id = ?");

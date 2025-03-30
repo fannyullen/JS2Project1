@@ -6,14 +6,14 @@ import SearchBar from '../../components/Search/SearchBar';
 
 function Home() {
 
-    // Initial state is an empty array, setState = we set a new state
     const [products, setProducts] = useState([]);
 
-  useEffect(() => { // för att det inte ska skickas massa anrop till backend, utan renderas bara en gång
+  useEffect(() => {
 
     fetch("/api/products")
     .then(resp => resp.json())
     .then(products => {
+      
       setProducts(products);
     });
 

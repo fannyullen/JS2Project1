@@ -3,7 +3,6 @@ import { useState } from "react";
 function AdminForm() {
 
     const [formData, setFormData] = useState({
-        // Attribut nedan, en för varje fält. Initial state = empty string
         productName: "",
         description: "",
         category: "",
@@ -25,11 +24,11 @@ function AdminForm() {
     };
 
     const handleSubmit = (event) => {
-
+    
         event.preventDefault();
 
         const product = { ...formData };
-        
+    
         fetch("/api/products", {
             method: "POST",
             headers: {
@@ -58,35 +57,39 @@ function AdminForm() {
                         <div className="grid md:grid-cols-2 lg:mx-36">
                             <div className="m-4">
                                 <label htmlFor="product-name" className="block">Namn</label>
-                                <input type="text" id="product_name" className="border-1 rounded h-8 w-full" name="productName" value={formData.productName} onChange={handleInputChange} />
+                                <input type="text" id="product_name" required className="border-1 rounded h-8 w-full" name="productName" value={formData.productName} onChange={handleInputChange} />
                             </div>
                             
                             <div className="m-4">
                                 <label htmlFor="description" className="block">Beskrivning</label>
-                                <textarea type="text" id="description" className="border-1 rounded w-full" name="description" value={formData.description} onChange={handleInputChange} />
+                                <textarea type="text" id="description" required className="border-1 rounded w-full" name="description" value={formData.description} onChange={handleInputChange} />
                             </div>
                             <div className="m-4">
                                 <label htmlFor="category" className="block">Kategori</label>
-                                <input type="text" id="category" className="w-full border-1 rounded h-8" name="category" value={formData.category} onChange={handleInputChange} />
+                                <input type="text" id="category" required className="w-full border-1 rounded h-8" name="category" value={formData.category} onChange={handleInputChange} />
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 lg:mx-36">
                             <div className="m-4">
                                 <label htmlFor="color" className="block">Färg</label>
-                                <input type="text" id="color" className="border-1 rounded h-8 w-full" name="color" value={formData.color} onChange={handleInputChange} />
+                                <input type="text" id="color" className="border-1 rounded h-8 w-full" name="color" required value={formData.color} onChange={handleInputChange} />
                             </div>
                             <div className="m-4">
                                 <label htmlFor="image" className="block">Bild</label>
-                                <input type="text" id="image" className="border-1 rounded h-8 w-full" name="image" value={formData.image} onChange={handleInputChange} />
+                                <input type="text" id="image" required className="border-1 rounded h-8 w-full" name="image" value={formData.image} onChange={handleInputChange} />
                             </div>
                             <div className="m-4">
                                 <label htmlFor="sku" className="block">SKU</label>
-                                <input type="text" id="sku" className="border-1 rounded h-8 w-full" name="SKU" value={formData.SKU} onChange={handleInputChange} />
+                                <input type="text" id="sku" pattern="[a-zA-Z]{3}[0-9]{3}"  required className="border-1 rounded h-8 w-full" name="SKU" value={formData.SKU} onChange={handleInputChange} />
                             </div>
                             <div className="m-4">
                                 <label htmlFor="price" className="block">Pris</label>
-                                <input type="text" id="price" className="border-1 rounded h-8 w-full" name="productPrice" value={formData.productPrice} onChange={handleInputChange} />
+                                <input type="text" id="price" required className="border-1 rounded h-8 w-full" name="productPrice" value={formData.productPrice} onChange={handleInputChange} />
+                            </div>
+                            <div className="m-4">
+                                <label htmlFor="publish-date" className="block">Publiseringsdatum </label>
+                                <input type="date" id="publish-date" required className="border-2" />
                             </div>
                         </div>
                     </div>

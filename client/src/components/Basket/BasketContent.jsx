@@ -5,7 +5,7 @@ import { useCart } from "../../pages/Basket/CartContext";
 function BasketContent() {
 
     // Hämta varukorgens innehåll och funktioner från Context
-    const { cart, removeFromCart, decreaseQuantity, addToCart } = useCart();
+    const { cart, removeFromCart, getTotalPrice, decreaseQuantity, addToCart } = useCart();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -50,10 +50,11 @@ function BasketContent() {
                             </div>
 
                     </div>
+                    
                 </div>
                     
                 ))}
-
+                    <div className="mt-6 mb-6">Totalbelopp: {getTotalPrice()} kr</div>
                     <div className="flex justify-center">
                     <NavLink to={`/checkout`}>
                     

@@ -31,20 +31,26 @@ function Main({ products, product }) {
             <article className="p-4">
                 {products.map((product) => (
                     <div>
-                        <NavLink to={`/products/${product.id}`}>
+                        <NavLink to={`/products/${product.urlSlug}`}>
 
                             <div key={product.id}>
-                                <img src={product.image} alt="image" className="w-full object-cover rounded-lg"/>
+                                <div className="relative">
+                                    <img src={product.image} alt="image" className="w-full object-cover rounded-lg"/>
+                                    <div className="absolute bottom-2 right-2 text-xl z-50">
+                                        <i class="bi bi-suit-heart"></i>
+                                    </div>
+                                </div>
+                                
                                 <div className="flex flex-row justify-between text-lg font-bold text-gray-900 mt-2">
                                     <div>{product.productName}</div>
                                     <div>{product.productPrice} SEK</div>
                                 </div>
+                                
                             </div>
+                            
                     
                         </NavLink>                  
                         <button onClick={() => addToCart(product)} className="items-center px-4 py-2 border-2 rounded-md text-sm font-medium transition-colors hover:text-gray-800 hover:shadow-sm shadow-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black mt-2 mb-2 cursor-pointer">Lägg till i varukorg</button>
-                        
-                    
                     </div>
                 ))}
                 

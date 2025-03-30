@@ -15,13 +15,11 @@ function SearchResultPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Hämtar URL med produkten som vi sökt efter (query-värdet)
         if (query) {
-            fetch(`http://localhost:5175/api/search?q=${encodeURIComponent(query)}`)
+            fetch(`http://localhost:8000/api/search?q=${encodeURIComponent(query)}`)
             .then((res) => res.json())
             .then((data) => {
 
-                // Filtrerar - toLowerCase - till små bokstäver och som inkluderar det som användaren matat in i input-fältet
                 const results = data.filter((product) => {
                     return product && product.productName && product.productName.toLowerCase().includes(query)
                 })

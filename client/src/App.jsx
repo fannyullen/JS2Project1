@@ -22,7 +22,7 @@ function App() {
 
           <Route index element={<Home />} />
 
-          <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/products/:urlSlug" element={<ProductDetails />} />
 
           <Route path="/search" element={<SearchResultPage />} />
 

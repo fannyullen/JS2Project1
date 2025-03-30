@@ -2,9 +2,8 @@ import { Link } from "react-router";
 
 function AdminTable({ products, setProducts }) {
 
-    // Funktion för att radera en produkt från listan
     const deleteProduct = id => {
-        fetch(`http://localhost:5175/api/products/${id}`, {
+        fetch(`http://localhost:8000/api/products/${id}`, {
             method: "DELETE",
         })
         .then(resp => resp.json())
