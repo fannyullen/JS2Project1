@@ -32,19 +32,19 @@ app.use(bodyParser.json());
 // GET /api/products
 app.get("/api/products", (req, res) => {
 
-    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, urlSlug FROM products")
+    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, publishDate, urlSlug FROM products")
 
     const products = select.all();
 
     res.json(products);
 });
 
-// GET /api/products/:id
+// GET /api/products/:urlSlug
 app.get("/api/products/:urlSlug", (req, res) => {
 
     const { urlSlug } = req.params;
 
-    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, urlSlug FROM products WHERE urlSlug = ?");
+    const select = db.prepare("SELECT id, productName, productPrice, description, category, color, image, SKU, publishDate, urlSlug FROM products WHERE urlSlug = ?");
 
     const product = select.get(urlSlug);
 
@@ -70,8 +70,20 @@ app.get("/api/search", (req, res) => {
 
 // POST anrop
 app.post('/api/products', (req, res) => {
-    const { productName, description, category, color, image, SKU, productPrice, publishDate } = req.body;
-    const product = { productName, description, category, color, SKU, image, productPrice, publishDate }
+    /* const { productName, description, category, color, image, SKU, productPrice, publishDate } = req.body;
+    const product = { productName, description, category, color, SKU, image, productPrice, publishDate } */
+
+    const product = {
+        productName: req.body.productName,
+        description: req.body.description,
+        category: req.body.category,
+        color: req.body.color,
+        image: req.body.image,
+        SKU: req.body.SKU,
+        productPrice: req.body.productPrice,
+        publishDate: new Date().toISOString(),
+        urlSlug: slugify(req.body.productName)
+    }
 
     const insert = db.prepare(`
         INSERT INTO products (
@@ -82,7 +94,8 @@ app.post('/api/products', (req, res) => {
         image,
         SKU,
         productPrice,
-        publishDate
+        publishDate,
+        urlSlug
         ) VALUES (
          @productName,
          @description,
@@ -91,7 +104,8 @@ app.post('/api/products', (req, res) => {
          @image,
          @SKU,
          @productPrice,
-         @publishDate
+         @publishDate,
+         @urlSlug
         )
         `);
 

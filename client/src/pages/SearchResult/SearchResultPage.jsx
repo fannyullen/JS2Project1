@@ -46,7 +46,7 @@ function SearchResultPage() {
                 {products.map((product) => (
                     
                     <article key={product.id} className="mb-2">
-                        <NavLink to={`/products/${product.id}`}>
+                        <NavLink to={`/products/${product.urlSlug}`}>
                         <div>
                             <img src={product.image} alt="" className="w-full object-cover rounded-lg mb-4" />
 

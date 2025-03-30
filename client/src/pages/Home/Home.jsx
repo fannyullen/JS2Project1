@@ -22,7 +22,7 @@ function Home() {
     return (
         <>
             <Header />
-            <Main products={products}/>
+            <Main products={products} />
             <Footer />
         </>
     )

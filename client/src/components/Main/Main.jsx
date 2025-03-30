@@ -1,8 +1,8 @@
 import { Link, NavLink } from "react-router";
 import { useCart } from "../../pages/Basket/CartContext";
+import { format, differenceInDays } from "date-fns";
 
-// Vi skickar in data i komponenten (data = products) via props
-function Main({ products, product }) {
+function Main({ products }) {
 
     const { addToCart } = useCart();
 
@@ -28,13 +28,14 @@ function Main({ products, product }) {
 
         <section className="[&>*]:grid [&>*]:grid-cols-[1fr] [&>*]:gap-2 product sm:[&>*]:grid-cols-2 lg:[&>*]:grid-cols-3 xl:[&>*]:grid-cols-4 ml-4">
             
+        
             <article className="p-4">
                 {products.map((product) => (
-                    <div>
+                    <div key={product.id}>
                         <NavLink to={`/products/${product.urlSlug}`}>
-
-                            <div key={product.id}>
+                            <div>
                                 <div className="relative">
+                                
                                     <img src={product.image} alt="image" className="w-full object-cover rounded-lg"/>
                                     <div className="absolute bottom-2 right-2 text-xl z-50">
                                         <i class="bi bi-suit-heart"></i>
